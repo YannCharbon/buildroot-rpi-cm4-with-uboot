@@ -8,6 +8,7 @@ If you need to install the NFS server, run `.install_nfs.sh`.
 ## Using CM4 with NFS
 The following procedure must be run from the Buildroot root directory if nothing different is specified.
 
+The following steps are to install the NFS server on the host :
 1. `sudo apt install nfs-kernel-server`
 2. `sudo mkdir /srv/nfs`
 3. `sudo chown -R $USER /srv/nfs/`
@@ -15,17 +16,19 @@ The following procedure must be run from the Buildroot root directory if nothing
     1. Add `/srv/nfs 192.168.10.0/24(rw,root_squash,sync,no_subtree_check)`
 5. `sudo service nfs-kernel-server reload`
 6. `showmount -e`
-7. `mkdir -p board/raspberrypicm4io/rootfs_overlay/media/nfs`
-8. `mkdir -p board/raspberrypicm4io/rootfs_overlay/etc`
-9. `touch board/raspberrypicm4io/rootfs_overlay/etc/fstab`
+
+The following steps are to install the NFS client on the target (the current Buildroot distro already contains these elements, this is only for indication purpose) :
+1. `mkdir -p board/raspberrypicm4io/rootfs_overlay/media/nfs`
+2. `mkdir -p board/raspberrypicm4io/rootfs_overlay/etc`
+3. `touch board/raspberrypicm4io/rootfs_overlay/etc/fstab`
     1. On CM4 : `cat /etc/fstab and copy to board/raspberrypicm4io/rootfs_overlay/etc/fstab`
     2. Add `192.168.10.2:/srv/nfs /media/nfs nfs soft,timeo=5,rsize=8192,wsize=8192 0 0` to this file
-10. Auto mount during start may fail because network is not ready, so create script to mount manually from user-space.
+4. Auto mount during start may fail because network is not ready, so create script to mount manually from user-space.
     1. `mkdir board/raspberrypicm4io/rootfs_overlay/root/`
     2. `touch board/raspberrypicm4io/rootfs_overlay/root/nfs_mount.sh`
     3. `echo -p "mount -t nfs 192.168.10.2:/srv/nfs /media/nfs/" > board/raspberrypicm4io/rootfs_overlay/root/nfs_mount.sh`
     4. `chmod +x board/raspberrypicm4io/rootfs_overlay/root/nfs_mount.sh`
-11. `make linux-menuconfig` : > File systems > Network File Systems
+5. `make linux-menuconfig` : > File systems > Network File Systems
     1. NFS client support for NFS version 4 : yes
     2. Provide swap over NFS support : yes
 
