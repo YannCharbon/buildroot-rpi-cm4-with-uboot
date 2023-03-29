@@ -1,0 +1,11 @@
+# <file system>	<mount pt>	<type>	<options>	<dump>	<pass>
+/dev/root	/		ext2	rw,noauto	0	1
+proc		/proc		proc	defaults	0	0
+devpts		/dev/pts	devpts	defaults,gid=5,mode=620,ptmxmode=0666	0	0
+tmpfs		/dev/shm	tmpfs	mode=0777	0	0
+tmpfs		/tmp		tmpfs	mode=1777	0	0
+tmpfs		/run		tmpfs	mode=0755,nosuid,nodev	0	0
+sysfs		/sys		sysfs	defaults	0	0
+#192.168.10.2:/srv/nfs /media/nfs nfs defaults,user,auto,_netdev,bg 0 0
+192.168.10.2:/srv/nfs /media/nfs nfs soft,timeo=5,rsize=8192,wsize=8192 0 0
+#192.168.10.2:/srv/nfs /media/nfs nfs soft,rsize=8192,wsize=8192,nofail,x-systemd.automount,x-systemd.device-timeout=45 0 0

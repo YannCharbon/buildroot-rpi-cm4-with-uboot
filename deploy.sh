@@ -5,10 +5,10 @@ git checkout 2023.02-rc2
 echo "Applying custom RPI CM4 defconfig"
 cp ../configs/buildroot-2023-rc2.config .config
 echo "Patching Buildroot"
-cp -r ../patches/buildroot/ .
+cp -r ../patches/buildroot-2023-rc2/ .
 echo "Creating deploy directories"
-mkdir -p /srv/tftp/
-mkdir -p /srv/nfs/
+sudo mkdir -p /srv/tftp/
+sudo mkdir -p /srv/nfs/
 echo "Deploying Buildroot"
 make -j8
 echo "Initializing git in Linux and U-Boot for convenience"
