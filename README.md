@@ -1,6 +1,10 @@
 ## Usage
 Run `./deploy.sh` after cloning to automatically deploy buildroot for RPI CM4 with U-Boot.
 
+If you need to install the TFTP server, run `.install_tftp.sh`.
+
+If you need to install the NFS server, run `.install_nfs.sh`.
+
 ## Using CM4 with NFS
 The following procedure must be run from the Buildroot root directory if nothing different is specified.
 
