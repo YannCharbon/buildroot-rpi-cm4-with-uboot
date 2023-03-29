@@ -9,6 +9,7 @@ cp -r ../patches/buildroot-2023-rc2/ .
 echo "Creating deploy directories"
 sudo mkdir -p /srv/tftp/
 sudo mkdir -p /srv/nfs/
+sudo chown -R $USER /srv/
 echo "Deploying Buildroot"
 make -j8
 echo "Initializing git in Linux and U-Boot for convenience"
