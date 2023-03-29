@@ -1,0 +1,178 @@
+diff --git a/arch/arm/boot/dts/bcm2711-rpi-4-b.dts b/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
+index 443241204..6eecc2873 100644
+--- a/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
++++ b/arch/arm/boot/dts/bcm2711-rpi-4-b.dts
+@@ -216,11 +216,11 @@ usb@0,0 {
+ };
+ 
+ /* uart0 communicates with the BT module */
+-&uart0 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&uart0_ctsrts_gpio30 &uart0_gpio32>;
+-	uart-has-rtscts;
+-};
++//&uart0 {
++//	pinctrl-names = "default";
++//	pinctrl-0 = <&uart0_ctsrts_gpio30 &uart0_gpio32>;
++//	uart-has-rtscts;
++//};
+ 
+ /* uart1 is mapped to the pin header */
+ &uart1 {
+diff --git a/arch/arm/boot/dts/bcm2711-rpi-cm4-io.dts b/arch/arm/boot/dts/bcm2711-rpi-cm4-io.dts
+index 19600b629..7a3ad1203 100644
+--- a/arch/arm/boot/dts/bcm2711-rpi-cm4-io.dts
++++ b/arch/arm/boot/dts/bcm2711-rpi-cm4-io.dts
+@@ -102,11 +102,11 @@ &gpio {
+ };
+ 
+ &hdmi0 {
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &hdmi1 {
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &genet {
+@@ -114,19 +114,19 @@ &genet {
+ };
+ 
+ &pixelvalve0 {
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &pixelvalve1 {
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &pixelvalve2 {
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &pixelvalve4 {
+-	status = "okay";
++	status = "disabled";
+ };
+ 
+ &vc4 {
+@@ -136,3 +136,11 @@ &vc4 {
+ &vec {
+ 	status = "disabled";
+ };
++
++/* For ISM3 shield */
++&uart4 {
++	status = "okay";
++};
++
++
++
+diff --git a/arch/arm/boot/dts/bcm2711-rpi-cm4.dtsi b/arch/arm/boot/dts/bcm2711-rpi-cm4.dtsi
+index a2954d466..6beb8b259 100644
+--- a/arch/arm/boot/dts/bcm2711-rpi-cm4.dtsi
++++ b/arch/arm/boot/dts/bcm2711-rpi-cm4.dtsi
+@@ -99,6 +99,7 @@ &uart0 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&uart0_ctsrts_gpio30 &uart0_gpio32>;
+ 	uart-has-rtscts;
++	status = "okay";
+ };
+ 
+ /* uart1 is mapped to the pin header */
+diff --git a/arch/arm/boot/dts/bcm2711.dtsi b/arch/arm/boot/dts/bcm2711.dtsi
+index 941c4d167..733c1dafb 100644
+--- a/arch/arm/boot/dts/bcm2711.dtsi
++++ b/arch/arm/boot/dts/bcm2711.dtsi
+@@ -149,16 +149,28 @@ uart3: serial@7e201600 {
+ 			status = "disabled";
+ 		};
+ 
++		//uart4: serial@7e201800 {
++		//	compatible = "arm,pl011", "arm,primecell";
++		//	reg = <0x7e201800 0x200>;
++		//	interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
++		//	clocks = <&clocks BCM2835_CLOCK_UART>,
++		//		 <&clocks BCM2835_CLOCK_VPU>;
++		//	clock-names = "uartclk", "apb_pclk";
++		//	arm,primecell-periphid = <0x00241011>;
++		//	status = "disabled";
++		//};
++
+ 		uart4: serial@7e201800 {
+-			compatible = "arm,pl011", "arm,primecell";
+-			reg = <0x7e201800 0x200>;
+-			interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
+-			clocks = <&clocks BCM2835_CLOCK_UART>,
+-				 <&clocks BCM2835_CLOCK_VPU>;
+-			clock-names = "uartclk", "apb_pclk";
+-			arm,primecell-periphid = <0x00241011>;
+-			status = "disabled";
+-		};
++			pinctrl-0 = <&uart4_pins>;
++			pinctrl-names = "default";
++ 			compatible = "arm,pl011", "arm,primecell";
++ 			reg = <0x7e201800 0x00000200>;
++ 			interrupts = <GIC_SPI 121 IRQ_TYPE_LEVEL_HIGH>;
++			clocks = <&clocks BCM2835_CLOCK_UART &clocks BCM2835_CLOCK_VPU>;
++ 			clock-names = "uartclk", "apb_pclk";
++ 			arm,primecell-periphid = <0x00241011>;
++ 			status = "disabled";
++ 		};
+ 
+ 		uart5: serial@7e201a00 {
+ 			compatible = "arm,pl011", "arm,primecell";
+@@ -421,7 +433,7 @@ emmc2bus: emmc2bus {
+ 		#size-cells = <1>;
+ 
+ 		ranges = <0x0 0x7e000000  0x0 0xfe000000  0x01800000>;
+-		dma-ranges = <0x0 0xc0000000  0x0 0x00000000  0x40000000>;
++		dma-ranges = <0x0 0x00000000  0x0 0x00000000  0x40000000>;
+ 
+ 		emmc2: mmc@7e340000 {
+ 			compatible = "brcm,bcm2711-emmc2";
+@@ -1093,6 +1105,26 @@ pin-rts {
+ 			bias-disable;
+ 		};
+ 	};
++	uart2_pins: uart2_pins {
++		brcm,pins = <0 1>;
++		brcm,function = <0x00000003>;
++		brcm,pull = <BCM2835_PUD_OFF BCM2835_PUD_UP>;
++	};
++	uart3_pins: uart3_pins {
++		brcm,pins = <4 5>;
++		brcm,function = <0x00000003>;
++		brcm,pull = <BCM2835_PUD_OFF BCM2835_PUD_UP>;
++	};
++	uart4_pins: uart4_pins {
++		brcm,pins = <8 9>;
++		brcm,function = <0x00000003>;
++		brcm,pull = <BCM2835_PUD_OFF BCM2835_PUD_UP>;
++	};
++	uart5_pins: uart5_pins {
++		brcm,pins = <12 13>;
++		brcm,function = <0x00000003>;
++		brcm,pull = <BCM2835_PUD_OFF BCM2835_PUD_UP>;
++	};
+ };
+ 
+ &rmem {
+diff --git a/arch/arm/boot/dts/bcm283x.dtsi b/arch/arm/boot/dts/bcm283x.dtsi
+index d2d9c6e67..ef13e857a 100644
+--- a/arch/arm/boot/dts/bcm283x.dtsi
++++ b/arch/arm/boot/dts/bcm283x.dtsi
+@@ -22,7 +22,7 @@ / {
+ 	#size-cells = <1>;
+ 
+ 	aliases {
+-		serial0 = &uart0;
++		//serial0 = &uart0;
+ 		serial1 = &uart1;
+ 	};
+ 

@@ -1,0 +1,18 @@
+diff --git a/include/configs/rpi.h b/include/configs/rpi.h
+index d5e064fb..cad26077 100644
+--- a/include/configs/rpi.h
++++ b/include/configs/rpi.h
+@@ -173,7 +173,12 @@
+ 	ENV_DEVICE_SETTINGS \
+ 	ENV_DFU_SETTINGS \
+ 	ENV_MEM_LAYOUT_SETTINGS \
+-	BOOTENV
++	BOOTENV \
++	"serverip=192.168.10.2\0" \
++	"ipaddr=192.168.10.3\0" \
++	"dlkernel=tftp ${kernel_addr_r} uImage\0" \
++	"dlfdt=tftp ${fdt_addr_r} cm4.dtb\0" \
++	"tftpboot=for i in 1 2 3 4 5 6 7; do echo Connect try ${i} && run dlkernel && run dlfdt && bootm ${kernel_addr_r} - ${fdt_addr_r}; done\0"
+ 
+ 
+ #endif
