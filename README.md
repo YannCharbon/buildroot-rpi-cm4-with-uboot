@@ -1,9 +1,9 @@
 ## Usage
 Run `./deploy.sh` after cloning to automatically deploy buildroot for RPI CM4 with U-Boot.
 
-If you need to install the TFTP server, run `.install_tftp.sh`.
+If you need to install the TFTP server, run `./install_tftp.sh`.
 
-If you need to install the NFS server, run `.install_nfs.sh`.
+If you need to install the NFS server, run `./install_nfs.sh`.
 
 ## Using CM4 with NFS
 The following procedure must be run from the Buildroot root directory if nothing different is specified.
@@ -36,7 +36,7 @@ The following steps are to install the NFS client on the target (the current Bui
 
 1. Enable dropbear : make menuconfig → Target packages → Networking applications → Dropbear
 2. Add a password to root user if there is no : make menuconfig → System configuration → Enable root login with password [y] → Root password
-3. It is required to login with the following option because every time the kernel is rebuild the SSH footrpint is changed : `ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" root@192.168.10.3`
+3. It is required to login with the following option because every time the kernel is rebuilt, the SSH footrpint is changed : `ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" root@192.168.10.3`
 
 ## Permanently add content to rootfs using RootFS overlay
 
