@@ -1,0 +1,13 @@
+diff --git a/include/configs/rpi.h b/include/configs/rpi.h
+index cad26077..33618586 100644
+--- a/include/configs/rpi.h
++++ b/include/configs/rpi.h
+@@ -130,7 +130,7 @@
+ 	"kernel_addr_r=0x00080000\0" \
+ 	"scriptaddr=0x02400000\0" \
+ 	"pxefile_addr_r=0x02500000\0" \
+-	"fdt_addr_r=0x02600000\0" \
++	"fdt_addr_r=0x04600000\0" \
+ 	"ramdisk_addr_r=0x02700000\0"
+ 
+ #if CONFIG_IS_ENABLED(CMD_MMC)
