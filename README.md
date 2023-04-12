@@ -42,3 +42,8 @@ The following steps are to install the NFS client on the target (the current Bui
 ## Permanently add content to rootfs using RootFS overlay
 
 If you want to permanently add content or override files/folders within the rootfs, you can place the content to `board/raspberrypicm4io/rootfs_overlay/`.
+
+## Remove unwanted target packages from rootfs
+
+Unfortunately, Buildroot does not natively support to remove an installed target package from the target rootfs. When you disable a package in the menuconfig, the binaries are not removed from the final target rootfs.
+To clean the target rootfs, you can run `./clean_target_packages.sh` and run `make` to regenerate the filesystem.
